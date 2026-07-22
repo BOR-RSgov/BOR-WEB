@@ -1,31 +1,20 @@
 import User from "../models/User.js";
-
+import ApiResponse  from "../utils/apiResponse.js";
+import asyncHandler from "../middleware/asyncHandler.js";
+import ApiError from "../utils/ApiError.js";
 /*
 |--------------------------------------------------------------------------
 | Get All Users
 |--------------------------------------------------------------------------
 */
 
-export const getUsers = async (req, res) => {
-    try {
-
+export const getUsers = asyncHandler (async (req, res) => {
         const users = await User.find().select("-password");
-
-        res.status(200).json({
-            success: true,
-            message: "Users fetched successfully",
-            data: users
-        });
-
-    } catch (error) {
-
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-
+        if (!users) {
+        throw new ApiError( 500, "Something went wrong");
     }
-};
+        res.status(200).json(new ApiResponse(200,"Users fetched successfully",user));
+});
 
 /*
 |--------------------------------------------------------------------------
@@ -33,25 +22,8 @@ export const getUsers = async (req, res) => {
 |--------------------------------------------------------------------------
 */
 
-export const createUser = async (req, res) => {
-
-    try {
+export const createUser = asyncHandler (async (req, res) => {
 
         const user = await User.create(req.body);
-
-        res.status(201).json({
-            success: true,
-            message: "User created successfully",
-            data: user
-        });
-
-    } catch (error) {
-
-        res.status(500).json({
-            success: false,
-            message: error.message
-        });
-
-    }
-
-};
+          res.status(200).json(new ApiResponse(201,"Users created successfully",user));
+});

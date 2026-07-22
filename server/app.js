@@ -3,6 +3,9 @@ import cors from "cors";
 import helmet from "helmet";
 import compression from "compression";
 import morgan from "morgan";
+import userRoutes from "./routes/user.routes.js";
+import authRoutes from "./routes/auth.routes.js";
+import errorHandler from "./middleware/error.middleware.js";
 
 const app = express();
 
@@ -13,16 +16,12 @@ const app = express();
 */
 
 app.use(express.json());
-
 app.use(express.urlencoded({ extended: true }));
-
 app.use(cors());
-
 app.use(helmet());
-
 app.use(compression());
-
 app.use(morgan("dev"));
+app.use(errorHandler);
 
 /*
 |--------------------------------------------------------------------------
@@ -31,12 +30,18 @@ app.use(morgan("dev"));
 */
 
 app.get("/", (req, res) => {
-    res.status(200).json({
-        success: true,
-        message: "Welcome to Board of Revenue CMS API",
-        version: "1.0.0"
-    });
+  res.status(200).json({
+    success: true,
+    message: "Welcome to Board of Revenue CMS API",
+    version: "1.0.0",
+  });
 });
+/*
+|--------------------------------------------------------------------------
+| My APIs
+|--------------------------------------------------------------------------
+*/
+app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/auth", authRoutes);
 
 export default app;
-
