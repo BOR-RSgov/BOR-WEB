@@ -2,6 +2,7 @@ import User from "../models/User.js";
 import ApiResponse  from "../utils/apiResponse.js";
 import asyncHandler from "../middleware/asyncHandler.js";
 import ApiError from "../utils/ApiError.js";
+import * as userService from "../services/user.service.js";
 /*
 |--------------------------------------------------------------------------
 | Get All Users
@@ -9,11 +10,8 @@ import ApiError from "../utils/ApiError.js";
 */
 
 export const getUsers = asyncHandler (async (req, res) => {
-        const users = await User.find().select("-password");
-        if (!users) {
-        throw new ApiError( 500, "Something went wrong");
-    }
-        res.status(200).json(new ApiResponse(200,"Users fetched successfully",user));
+        const data=await userService.getUsersService(req.query);
+        res.status(200).json(new ApiResponse(200,"Users fetched successfully", data));
 });
 
 /*

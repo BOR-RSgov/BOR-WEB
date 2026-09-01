@@ -1,3 +1,6 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+@import "bootstrap/dist/css/bootstrap.min.css";
+
 :root {
   --text: #6b6375;
   --text-h: #08060d;
@@ -109,3 +112,19 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+.card-surface {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+}
+
+.btn-brand {
+  background: var(--gradient);
+  color: #fff;
+  border: none;
+}
+.btn-brand:hover { color: #fff; filter: brightness(1.05); }
+
+.text-muted-brand { color: var(--muted); }

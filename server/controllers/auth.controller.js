@@ -26,7 +26,17 @@ export const register = asyncHandler (async (req, res) => {
       password,
     });
 
-    res.status(201).json(new ApiResponse(200,"Success",user));
+    res.status(201).json({
+        success: true,
+        message: "Registration successful",
+        data: {
+            id: user._id,
+            fullName: user.fullName,
+            email: user.email,
+            role: user.role,
+            token: user.generateToken()
+        }
+    });
 });
 /*
 |--------------------------------------------------------------------------
@@ -54,7 +64,17 @@ export const login = asyncHandler(async (req, res) => {
      throw new ApiError( 400, "Invalid Email or Password");
     }
 
-    res.status(200).json(new ApiResponse(200,"Success",user));
+    res.status(200).json({
+        success: true,
+        message: "Login successful",
+        data: {
+            id: user._id,
+            fullName: user.fullName,
+            email: user.email,
+            role: user.role,
+            token: user.generateToken()
+        }
+    });
 });
 /*
 |--------------------------------------------------------------------------

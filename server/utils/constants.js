@@ -1,6 +1,5 @@
 export const USER_ROLES={
 SUPER_ADMIN:"super-admin",
-ADMIN:"admin",
 EDITOR:"editor"
 };
 

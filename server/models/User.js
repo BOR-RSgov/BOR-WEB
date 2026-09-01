@@ -29,13 +29,44 @@ const userSchema = new mongoose.Schema(
 
     role: {
       type: String,
-      enum: ["super-admin", "admin", "editor"],
+      enum: ["super-admin", "editor"],
       default: "editor",
     },
 
     isActive: {
       type: Boolean,
       default: true,
+    },
+    avatar: {
+      type: String,
+      default: "",
+    },
+    phone: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    designation: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    department: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+    lastLogin: {
+      type: Date,
+    },
+    createdBy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
     },
   },
   {
@@ -50,16 +81,11 @@ const userSchema = new mongoose.Schema(
 */
 
 userSchema.pre("save", async function (next) {
-  // If password is not modified, don't hash again
-  if (!this.isModified("password")) {
-    return;
-  }
+  if (!this.isModified("password")) return next();
 
-  // Generate salt
   const salt = await bcrypt.genSalt(10);
-
-  // Hash password
   this.password = await bcrypt.hash(this.password, salt);
+  next();
 });
 
 /*
@@ -94,5 +120,12 @@ userSchema.methods.generateToken = function () {
 };
 
 const User = mongoose.model("User", userSchema);
+
+User.searchFields=[
+"fullName",
+"email",
+"phone",
+"designation"
+];
 
 export default User;
